@@ -3,12 +3,13 @@ requires = ["setuptools>=62"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dominate"
-description = "Dominate is a Python library for creating and manipulating HTML documents using an elegant DOM API."
+name = "domin8"
+description = "Domin8 is a Python library for creating and manipulating HTML documents using an elegant DOM API."
 readme = {file = "README.md", content-type = "text/markdown"}
 authors = [
     {name = "Tom Flanagan", email = "tom@zkpq.ca"},
     {name = "Jake Wharton"},
+    {name = "dosisod"},
 ]
 requires-python = ">=3.4"
 keywords = ["framework", "templating", "template", "html", "xhtml", "python", "html5"]
@@ -33,11 +34,11 @@ classifiers = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/Knio/dominate"
-Source = "https://github.com/Knio/dominate"
+Homepage = "https://github.com/dosisod/domin8"
+Source = "https://github.com/dosisod/domin8"
 
 [tool.setuptools]
-packages = ["dominate"]
+packages = ["dominate", "domin8"]
 
 [tool.setuptools.dynamic]
 version = {attr = "dominate._version.__version__"}

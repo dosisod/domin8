@@ -1,20 +1,20 @@
-Dominate
-========
+Domin8
+======
 
-`Dominate` is a Python library for creating and manipulating HTML documents using an elegant DOM API.
+`Domin8` is a Python library for creating and manipulating HTML documents using an elegant DOM API.
 It allows you to write HTML pages in pure Python very concisely, which eliminates the need to learn another template language, and lets you take advantage of the more powerful features of Python.
 
-![Python version](https://img.shields.io/pypi/pyversions/dominate.svg?style=flat)
-[![Build status](https://github.com/Knio/dominate/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Knio/dominate/actions/workflows/ci.yml?query=branch%3Amaster+)
-[![Coverage status](https://img.shields.io/coveralls/github/Knio/dominate/master.svg?style=flat)](https://coveralls.io/r/Knio/dominate?branch=master)
+![Python version](https://img.shields.io/pypi/pyversions/domin8.svg?style=flat)
+[![Build status](https://github.com/dosisod/domin8/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/dosisod/domin8/actions/workflows/ci.yml?query=branch%3Amaster+)
+[![Coverage status](https://img.shields.io/coveralls/github/dosisod/domin8/master.svg?style=flat)](https://coveralls.io/r/dosisod/domin8?branch=master)
 
 Python:
 
 ```python
-import dominate
-from dominate.tags import *
+import domin8
+from domin8.tags import *
 
-doc = dominate.document(title='Dominate your HTML')
+doc = domin8.document(title='Domin8 your HTML')
 
 with doc.head:
     link(rel='stylesheet', href='style.css')
@@ -38,7 +38,7 @@ Output:
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Dominate your HTML</title>
+    <title>Domin8 your HTML</title>
     <link href="style.css" rel="stylesheet">
     <script src="script.js" type="text/javascript"></script>
   </head>
@@ -67,15 +67,17 @@ Output:
 Installation
 ------------
 
-The recommended way to install `dominate` is with
+The recommended way to install `domin8` is with
 [`pip`](http://pypi.python.org/pypi/pip/):
 
-    pip install dominate
+    pip install domin8
 
-[![PyPI version](https://img.shields.io/pypi/v/dominate.svg?style=flat)](https://pypi.org/project/dominate/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/dominate.svg?style=flat)](https://pypi.org/project/dominate/)
+[![PyPI version](https://img.shields.io/pypi/v/domin8.svg?style=flat)](https://pypi.org/project/domin8/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/domin8.svg?style=flat)](https://pypi.org/project/domin8/)
 
 
+> `domin8` is a fork of [`dominate`](https://github.com/Knio/dominate). For backwards compatibility
+> you can use `domin8` by importing form either `dominate` or `domin8`.
 
 Developed By
 ------------
@@ -83,9 +85,10 @@ Developed By
 * Tom Flanagan - <tom@zkpq.ca>
 * Jake Wharton - <jakewharton@gmail.com>
 * [Brad Janke](//github.com/bradj)
+* [dosisod](https://github.com/dosisod)
 
 Git repository located at
-[github.com/Knio/dominate](//github.com/Knio/dominate)
+[github.com/dosisod/domin8](https://github.com/dosisod/domin8)
 
 
 Examples
@@ -94,15 +97,15 @@ Examples
 All examples assume you have imported the appropriate tags or entire tag set:
 
 ```python
-from dominate.tags import *
+from domin8.tags import *
 ```
 
 
 Hello, World!
 -------------
 
-The most basic feature of `dominate` exposes a class for each HTML element, where the constructor
-accepts child elements, text, or keyword attributes. `dominate` nodes return their HTML representation
+The most basic feature of `domin8` exposes a class for each HTML element, where the constructor
+accepts child elements, text, or keyword attributes. `domin8` nodes return their HTML representation
 from the `__str__`, `__unicode__`, and `render()` methods.
 
 ```python
@@ -119,7 +122,7 @@ print(html(body(h1('Hello, World!'))))
 Attributes
 ----------
 
-`Dominate` can also use keyword arguments to append attributes onto your tags. Most of the attributes are a direct copy from the HTML spec with a few variations.
+`domin8` can also use keyword arguments to append attributes onto your tags. Most of the attributes are a direct copy from the HTML spec with a few variations.
 
 For attributes `class` and `for` which conflict with Python's [reserved keywords](http://docs.python.org/2/reference/lexical_analysis.html#keywords "Reserved Keywords"), you can use the following aliases:
 
@@ -182,7 +185,7 @@ print(list)
 </ul>
 ```
 
-`dominate` supports iterables to help streamline your code:
+`domin8` supports iterables to help streamline your code:
 
 ```python
 print(ul(li(a(name, href=link), __pretty=False) for name, link in menu_items))
@@ -414,10 +417,10 @@ with d:
 <div id="header"></div>
 ```
 
-And text nodes can be added with the `dominate.util.text` function:
+And text nodes can be added with the `domin8.util.text` function:
 
 ```python
-from dominate.util import text
+from domin8.util import text
 para = p(__pretty=False)
 with para:
     text('Have a look at our ')
@@ -433,7 +436,7 @@ print(para)
 Decorators
 ----------
 
-`Dominate` is great for creating reusable widgets for parts of your page. Consider this example:
+`domin8` is great for creating reusable widgets for parts of your page. Consider this example:
 
 ```python
 def greeting(name):
@@ -495,7 +498,7 @@ print(greeting('Bob'))
 Creating Documents
 ------------------
 
-Since creating the common structure of an HTML document everytime would be excessively tedious dominate provides a class to create and manage them for you: `document`.
+Since creating the common structure of an HTML document everytime would be excessively tedious domin8 provides a class to create and manage them for you: `document`.
 
 When you create a new document, the basic HTML tag structure is created for you.
 
@@ -507,14 +510,14 @@ print(d)
 <!DOCTYPE html>
 <html>
     <head>
-       <title>Dominate</title>
+       <title>Domin8</title>
     </head>
     <body></body>
 </html>
 ```
 
 The `document` class accepts `title`, `doctype`, and `request` keyword arguments.
-The default values for these arguments are `Dominate`, `<!DOCTYPE html>`, and `None` respectively.
+The default values for these arguments are `Domin8`, `<!DOCTYPE html>`, and `None` respectively.
 
 The `document` class also provides helpers to allow you to access the `title`, `head`, and `body` nodes directly.
 
@@ -524,11 +527,11 @@ d = document()
 
 ```python
 >>> d.head
-<dominate.tags.head: 0 attributes, 1 children>
+<domin8.tags.head: 0 attributes, 1 children>
 >>> d.body
-<dominate.tags.body: 0 attributes, 0 children>
+<domin8.tags.body: 0 attributes, 0 children>
 >>> d.title
-u'Dominate'
+u'Domin8'
 ```
 
 
@@ -544,7 +547,7 @@ print(d)
 <!DOCTYPE html>
 <html>
     <head>
-       <title>Dominate</title>
+       <title>Domin8</title>
     </head>
     <body>
         <h1>Hello, World!</h1>
@@ -556,10 +559,10 @@ print(d)
 Embedding HTML
 --------------
 
-If you need to embed a node of pre-formed HTML coming from a library such as markdown or the like, you can avoid escaped HTML by using the raw method from the dominate.util package:
+If you need to embed a node of pre-formed HTML coming from a library such as markdown or the like, you can avoid escaped HTML by using the raw method from the `domin8.util package`:
 
 ```
-from dominate.util import raw
+from domin8.util import raw
 ...
 td(raw('<a href="example.html">Example</a>'))
 ```
@@ -570,10 +573,10 @@ Without the raw call, this code would render escaped HTML with lt, etc.
 SVG
 ---
 
-The `dominate.svg` module contains SVG tags similar to how `dominate.tags` contains HTML tags. SVG elements will automatically convert `_` to `-` for dashed elements. For example:
+The `domin8.svg` module contains SVG tags similar to how `domin8.tags` contains HTML tags. SVG elements will automatically convert `_` to `-` for dashed elements. For example:
 
 ```python
-from dominate.svg import *
+from domin8.svg import *
 print(circle(stroke_width=5))
 ```
 
