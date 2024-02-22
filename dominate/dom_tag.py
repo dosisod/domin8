@@ -25,20 +25,8 @@ from functools import wraps
 import threading
 from asyncio import get_event_loop
 from uuid import uuid4
+from collections.abc import Callable
 from contextvars import ContextVar
-
-try:
-  # Python 3
-  from collections.abc import Callable
-except ImportError: # pragma: no cover
-  # Python 2.7
-  from collections import Callable
-
-try:
-  basestring = basestring
-except NameError: # py3 # pragma: no cover
-  basestring = str
-  unicode = str
 
 try:
   import greenlet
@@ -189,7 +177,7 @@ class dom_tag(object):
     '''
     if isinstance(key, int):
       self.children[key] = value
-    elif isinstance(key, basestring):
+    elif isinstance(key, str):
       self.attributes[key] = value
     else:
       raise TypeError('Only integer and string types are valid for assigning '
@@ -214,7 +202,7 @@ class dom_tag(object):
         # Convert to string so we fall into next if block
         obj = str(obj)
 
-      if isinstance(obj, basestring):
+      if isinstance(obj, str):
         obj = util.escape(obj)
         self.children.append(obj)
 
@@ -270,8 +258,8 @@ class dom_tag(object):
 
     results = []
     for child in self.children:
-      if (isinstance(tag, basestring) and type(child).__name__ == tag) or \
-        (not isinstance(tag, basestring) and isinstance(child, tag)):
+      if (isinstance(tag, str) and type(child).__name__ == tag) or \
+        (not isinstance(tag, str) and isinstance(child, tag)):
 
         if all(child.attributes.get(attribute) == value
             for attribute, value in attrs):
@@ -295,7 +283,7 @@ class dom_tag(object):
         return object.__getattribute__(self, 'children')[key]
       except IndexError:
         raise IndexError('Child with index "%s" does not exist.' % key)
-    elif isinstance(key, basestring):
+    elif isinstance(key, str):
       # Attributes are accessed using strings
       try:
         return object.__getattribute__(self, 'attributes')[key]
@@ -319,7 +307,6 @@ class dom_tag(object):
     Hack for "if x" and __len__
     '''
     return True
-  __nonzero__ = __bool__
 
 
   def __iter__(self):
@@ -344,15 +331,13 @@ class dom_tag(object):
     self.add(obj)
     return self
 
-  # String and unicode representations are the same as render()
-  def __unicode__(self):
+  def __str__(self):
     return self.render()
-  __str__ = __unicode__
 
 
   def render(self, indent='  ', pretty=True, xhtml=False):
     data = self._render([], 0, indent, pretty, xhtml)
-    return u''.join(data)
+    return ''.join(data)
 
 
   def _render(self, sb, indent_level, indent_str, pretty, xhtml):
@@ -372,7 +357,7 @@ class dom_tag(object):
     for attribute, value in sorted(self.attributes.items()):
       if value in (False, None):
         continue
-      val = unicode(value) if isinstance(value, util.text) and not value.escape else util.escape(unicode(value), True)
+      val = str(value) if isinstance(value, util.text) and not value.escape else util.escape(str(value), True)
       sb.append(' %s="%s"' % (attribute, val))
 
     sb.append(' />' if self.is_single and xhtml else '>')
@@ -402,7 +387,7 @@ class dom_tag(object):
           sb.append(indent_str * indent_level)
         child._render(sb, indent_level, indent_str, pretty, xhtml)
       else:
-        sb.append(unicode(child))
+        sb.append(str(child))
 
     return inline
 

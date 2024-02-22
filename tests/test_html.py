@@ -3,11 +3,6 @@ from dominate.tags import *
 import pytest
 from dominate.util import raw
 
-try:
-  xrange = xrange
-except NameError:
-  xrange = range
-
 
 def test_arguments():
   assert html(body(h1('Hello, pyy!'))).render() == \
@@ -43,7 +38,7 @@ def test_add():
   with pytest.raises(ValueError):
     d += None
   d += 1
-  d += xrange(2,3)
+  d += range(2,3)
   d += {'id': 'foo'}
   assert d.render() == '<div id="foo">12</div>'
   assert len(d) == 2

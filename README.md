@@ -106,7 +106,7 @@ Hello, World!
 
 The most basic feature of `domin8` exposes a class for each HTML element, where the constructor
 accepts child elements, text, or keyword attributes. `domin8` nodes return their HTML representation
-from the `__str__`, `__unicode__`, and `render()` methods.
+from the `__str__`, and `render()` methods.
 
 ```python
 print(html(body(h1('Hello, World!'))))
@@ -531,7 +531,7 @@ d = document()
 >>> d.body
 <domin8.tags.body: 0 attributes, 0 children>
 >>> d.title
-u'Domin8'
+'Domin8'
 ```
 
 

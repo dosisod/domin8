@@ -24,12 +24,6 @@ import re
 
 from .dom_tag import dom_tag
 
-try:
-  basestring = basestring
-except NameError:
-  basestring = str
-  unichr = chr
-
 
 def include(f):
   '''
@@ -95,10 +89,10 @@ def unescape(data):
     d = m.group(1)
     if d:
       d = int(d)
-      result.append(unichr(d))
+      result.append(chr(d))
     else:
       d = _unescape.get(m.group(2), ord('?'))
-      result.append(unichr(d))
+      result.append(chr(d))
 
     data = data[m.end():]
     m = cc.search(data)
@@ -117,7 +111,7 @@ def url_escape(data):
 
 def url_unescape(data):
   return re.sub('%([0-9a-fA-F]{2})',
-    lambda m: unichr(int(m.group(1), 16)), data)
+    lambda m: chr(int(m.group(1), 16)), data)
 
 
 class container(dom_tag):

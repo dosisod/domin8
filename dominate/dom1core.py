@@ -16,12 +16,6 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
-try:
-  basestring = basestring
-except NameError: # py3
-  basestring = str
-  unicode = str
-
 
 class dom1core(object):
   '''
@@ -52,7 +46,7 @@ class dom1core(object):
     '''
     DOM API: Returns all tags that match name.
     '''
-    if isinstance(name, basestring):
+    if isinstance(name, str):
       return self.get(name.lower())
     return None
 

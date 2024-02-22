@@ -19,11 +19,6 @@ Public License along with Dominate.  If not, see
 from . import tags
 from . import util
 
-try:
-  basestring = basestring
-except NameError: # py3
-  basestring = str
-  unicode = str
 
 class document(tags.html):
   tagname = 'html'
@@ -47,7 +42,7 @@ class document(tags.html):
     return self.title_node.text
 
   def set_title(self, title):
-    if isinstance(title, basestring):
+    if isinstance(title, str):
       self.title_node.text = title
     else:
       self.head.remove(self.title_node)

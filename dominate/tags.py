@@ -21,11 +21,6 @@ Public License along with Dominate.  If not, see
 from .dom_tag  import dom_tag, attr, get_current
 from .dom1core import dom1core
 
-try:
-  basestring = basestring
-except NameError: # py3
-  basestring = str
-  unicode = str
 
 underscored_classes = set(['del', 'input', 'map', 'object'])
 
@@ -86,7 +81,7 @@ class title(html_tag):
   heading does not have to stand alone when taken out of context.
   '''
   def _get_text(self):
-    return u''.join(self.get(basestring))
+    return ''.join(self.get(str))
   def _set_text(self, text):
     self.clear()
     self.add(text)
@@ -1009,16 +1004,16 @@ class font(html_tag):
 class comment(html_tag):
   '''
   Normal, one-line comment:
-    >>> print comment("Hello, comments!")
+    >>> print(comment("Hello, comments!"))
     <!--Hello, comments!-->
 
   For IE's "if" statement comments:
-    >>> print comment(p("Upgrade your browser."), condition='lt IE6')
+    >>> print(comment(p("Upgrade your browser."), condition='lt IE6'))
     <!--[if lt IE6]><p>Upgrade your browser.</p><![endif]-->
 
   Downlevel conditional comments:
-    >>> print comment(p("You are using a ", em("downlevel"), " browser."),
-            condition='false', downlevel='revealed')
+    >>> print(comment(p("You are using a ", em("downlevel"), " browser."),
+            condition='false', downlevel='revealed'))
     <![if false]><p>You are using a <em>downlevel</em> browser.</p><![endif]>
 
   For more on conditional comments see:
