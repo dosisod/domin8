@@ -11,7 +11,7 @@ authors = [
     {name = "Jake Wharton"},
     {name = "dosisod"},
 ]
-requires-python = ">=3.4"
+requires-python = ">=3.8"
 keywords = ["framework", "templating", "template", "html", "xhtml", "python", "html5"]
 license = {text = "LGPL-3.0-or-newer"}
 classifiers = [
@@ -20,7 +20,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
