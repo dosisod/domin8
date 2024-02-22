@@ -36,16 +36,6 @@ def include(f):
   return raw(data)
 
 
-def system(cmd, data=None):
-  '''
-  pipes the output of a program
-  '''
-  import subprocess
-  s = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-  out, err = s.communicate(data)
-  return out.decode('utf8')
-
-
 def escape(data, quote=True):  # stolen from std lib cgi
   '''
   Escapes special characters into their html entities

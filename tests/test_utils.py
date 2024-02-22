@@ -26,12 +26,6 @@ def test_include():
       pass
 
 
-def test_system():
-  d = div()
-  d += util.system('echo Hello World')
-  assert d.render().replace('\r\n', '\n') == '<div>Hello World\n</div>'
-
-
 def test_unescape():
   assert util.unescape('&amp;&lt;&gt;&#32;') == '&<> '
 
