@@ -63,77 +63,13 @@ class html_tag(dom_tag, dom1core):
     super(html_tag, self).__init__(*args, **kwargs)
 
 
-  # def validate(self):
-  #   '''
-  #   Validate the tag. This will check the attributes, context, and contents and
-  #   emit tuples in the form of: element, message.
-  #   '''
-  #   errors = []
-
-  #   errors.extend(self.validate_attributes())
-  #   errors.extend(self.validate_context())
-  #   errors.extend(self.validate_content())
-
-  #   return errors
-
-  # def validate_attributes(self):
-  #   '''
-  #   Validate the tag attributes.
-  #   '''
-  #   return []
-
-  # def validate_context(self):
-  #   '''
-  #   Validate the tag context.
-  #   '''
-  #   return []
-
-  # def validate_content(self):
-  #   '''
-  #   Validate the content of the tag.
-  #   '''
-  #   return []
-
-  # def _check_attributes(self, *attrs):
-  #   valid = set([])
-  #   for attr in attrs:
-  #     if hasattr(attr, '__iter__'):
-  #       valid |= set(attr)
-  #     else:
-  #       valid.add(attr)
-  #   return set(list(self.attributes.iterkeys())) - valid
-
-
-
-################################################################################
-############################### Html Tag Classes ###############################
-################################################################################
-
-# Root element
-
 class html(html_tag):
   '''
   The html element represents the root of an HTML document.
   '''
   pass
-  # def validate_attributes(self):
-  #   errors = []
-  #   for invalid in self._check_attributes(_ATTR_GLOBAL, 'manifest'):
-  #     errors.append( (self, ERR_ATTRIBUTE, 'Invalid attribute: "%s"' % invalid) )
-  #   return errors
-
-  # def validate_context(self):
-  #   if self.parent is not None and not isinstance(self.parent, iframe):
-  #     return [(self, ERR_CONTEXT, 'Must be root element or child of an <iframe>')]
-  #   return []
-
-  # def validate_content(self):
-  #   if len(self) != 2 or not isinstance(self[0], head) or not isinstance(self[1], body):
-  #     return [(self, ERR_CONTENT, 'Children must be <head> and then <body>.')]
-  #   return []
 
 
-# Document metadata
 class head(html_tag):
   '''
   The head element represents a collection of metadata for the document.
@@ -191,7 +127,6 @@ class style(html_tag):
   is_pretty = False
 
 
-# Scripting
 class script(html_tag):
   '''
   The script element allows authors to include dynamic script and data blocks
@@ -210,7 +145,6 @@ class noscript(html_tag):
   pass
 
 
-# Sections
 class body(html_tag):
   '''
   The body element represents the main content of the document.
@@ -341,7 +275,6 @@ class address(html_tag):
   pass
 
 
-# Grouping content
 class p(html_tag):
   '''
   The p element represents a paragraph.
@@ -455,7 +388,6 @@ class div(html_tag):
   pass
 
 
-# Text semantics
 class a(html_tag):
   '''
   If the a element has an href attribute, then it represents a hyperlink (a
@@ -713,7 +645,6 @@ class wbr(html_tag):
   is_inline = True
 
 
-# Edits
 class ins(html_tag):
   '''
   The ins element represents an addition to the document.
@@ -728,7 +659,6 @@ class del_(html_tag):
   pass
 _del = del_
 
-# Embedded content
 class img(html_tag):
   '''
   An img element represents an image.
@@ -825,7 +755,6 @@ class area(html_tag):
   is_single = True
 
 
-# Tabular data
 class table(html_tag):
   '''
   The table element represents data with more than one dimension, in the form
@@ -907,7 +836,6 @@ class th(html_tag):
   pass
 
 
-# Forms
 class form(html_tag):
   '''
   The form element represents a collection of form-associated elements, some of
@@ -1041,7 +969,6 @@ class meter(html_tag):
   pass
 
 
-# Interactive elements
 class details(html_tag):
   '''
   The details element represents a disclosure widget from which the user can
@@ -1079,7 +1006,6 @@ class font(html_tag):
   pass
 
 
-# Additional markup
 class comment(html_tag):
   '''
   Normal, one-line comment:
@@ -1117,7 +1043,6 @@ class comment(html_tag):
 
     pretty = self._render_children(sb, indent_level - 1, indent_str, pretty, xhtml)
 
-    # if len(self.children) > 1:
     if any(isinstance(child, dom_tag) for child in self):
       sb.append('\n')
       sb.append(indent_str * (indent_level - 1))
