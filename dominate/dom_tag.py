@@ -425,12 +425,16 @@ class dom_tag:
       'phor': 'for',
     }.get(attribute, attribute)
 
+    # Special case to support Hyperscript
+    if attribute == '_':
+        pass
+
     # Workaround for Python's reserved words
-    if attribute[0] == '_':
+    elif attribute[0] == '_':
       attribute = attribute[1:]
 
     # Workaround for colon
-    if attribute.split('_')[0] in ('xlink', 'xml', 'xmlns'):
+    elif attribute.split('_')[0] in ('xlink', 'xml', 'xmlns'):
       attribute = attribute.replace('_', ':', 1).lower()
 
     # Workaround for dash

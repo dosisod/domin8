@@ -264,6 +264,12 @@ def test_namespaced_attributes():
   assert div(xlink_href='one').render() == '<div xlink:href="one"></div>'
 
 
+def test_just_underscore_is_ignored():
+  expected = '<div _="on click call alert(1)"></div>'
+
+  assert div(_="on click call alert(1)").render() == expected
+
+
 def test_comment():
   d = comment('Hi there')
   assert d.render() == '<!--Hi there-->'
