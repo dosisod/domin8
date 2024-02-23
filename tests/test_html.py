@@ -23,6 +23,14 @@ def test_kwargs():
   '''<div checked="checked" class="mydiv" data-name="foo" id="4" onclick="alert(1);"></div>'''
 
 
+def test_underscore_kwargs_converted_to_dashes():
+  d = div(hx_get="/", hx_push_url="true")
+
+  expected = '<div hx-get="/" hx-push-url="true"></div>'
+
+  assert d.render() == expected
+
+
 def test_repr():
   import re
   d = div()
@@ -252,7 +260,7 @@ def test_keyword_attributes():
 
 
 def test_namespaced_attributes():
-  assert div(foo_bar='one').render() == '<div foo_bar="one"></div>'
+  assert div(foo_bar='one').render() == '<div foo-bar="one"></div>'
   assert div(xlink_href='one').render() == '<div xlink:href="one"></div>'
 
 
