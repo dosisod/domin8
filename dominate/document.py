@@ -26,10 +26,10 @@ class document(tags.html):
     '''
     Creates a new document instance. Accepts `title` and `doctype`
     '''
-    super(document, self).__init__(*a, **kw)
+    super().__init__(*a, **kw)
     self.doctype    = doctype
-    self.head       = super(document, self).add(tags.head())
-    self.body       = super(document, self).add(tags.body())
+    self.head       = super().add(tags.head())
+    self.body       = super().add(tags.body())
     if title is not None:
       self.title_node = self.head.add(tags.title(title))
     with self.body:
@@ -65,7 +65,7 @@ class document(tags.html):
     if self.doctype:
       sb.append(self.doctype)
       sb.append('\n')
-    return super(document, self)._render(sb, *args, **kwargs)
+    return super()._render(sb, *args, **kwargs)
 
   def __repr__(self):
     return '<dominate.document "%s">' % self.title

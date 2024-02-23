@@ -132,7 +132,7 @@ class lazy(dom_tag):
     return object.__new__(_cls)
 
   def __init__(self, func, *args, **kwargs):
-    super(lazy, self).__init__()
+    super().__init__()
     self.func   = func
     self.args   = args
     self.kwargs = kwargs
@@ -151,7 +151,7 @@ class text(dom_tag):
   is_inline = True
 
   def __init__(self, _text, escape=True):
-    super(text, self).__init__()
+    super().__init__()
     self.escape = escape
     if escape:
       self.text = str_escape(_text)

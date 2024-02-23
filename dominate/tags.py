@@ -51,11 +51,7 @@ ERR_CONTENT = 'content'
 
 
 class html_tag(dom_tag, dom1core):
-  def __init__(self, *args, **kwargs):
-    '''
-    Creates a new html tag instance.
-    '''
-    super(html_tag, self).__init__(*args, **kwargs)
+  pass
 
 
 class html(html_tag):

@@ -17,7 +17,7 @@ Public License along with Dominate.  If not, see
 '''
 
 
-class dom1core(object):
+class dom1core:
   '''
   Implements the Document Object Model (Core) Level 1
 
