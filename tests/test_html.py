@@ -20,7 +20,7 @@ def test_kwargs():
     cls="mydiv",
     data_name='foo',
     onclick='alert(1);').render() == \
-  '''<div checked="checked" class="mydiv" data-name="foo" id="4" onclick="alert(1);"></div>'''
+  '''<div checked class="mydiv" data-name="foo" id="4" onclick="alert(1);"></div>'''
 
 
 def test_underscore_kwargs_converted_to_dashes():
@@ -286,9 +286,12 @@ def test_comment():
 
 def test_boolean_attributes():
   assert input_(type="checkbox", checked=True).render() == \
-      '<input checked="checked" type="checkbox">'
+      '<input checked type="checkbox">'
   assert input_(type="checkbox", checked=False).render() == \
       '<input type="checkbox">'
+
+  assert div(disabled=True).render() == '<div disabled></div>'
+  assert div(disabled=False).render() == '<div></div>'
 
 
 def test_nested_decorator_2():
@@ -361,3 +364,24 @@ def test_verbatim_attributes():
       '''<div attr="{&lt;div&gt;&lt;/div&gt;}"></div>'''
   assert div(attr = raw('{<div></div>}')).render() == \
       '''<div attr="{<div></div>}"></div>'''
+
+
+def test_smart_convert_bool_like_attributes():
+  assert input_(autocapitalize=True).render() == '<input autocapitalize="on">'
+  assert input_(autocapitalize=False).render() == '<input autocapitalize="off">'
+
+  assert input_(autocomplete=True).render() == '<input autocomplete="on">'
+  assert input_(autocomplete=False).render() == '<input autocomplete="off">'
+
+  assert input_(contenteditable=True).render() == '<input contenteditable="true">'
+  assert input_(contenteditable=False).render() == '<input contenteditable="false">'
+  assert input_(contenteditable='plaintext-only').render() == '<input contenteditable="plaintext-only">'
+
+  assert input_(draggable=True).render() == '<input draggable="true">'
+  assert input_(draggable=False).render() == '<input draggable="false">'
+
+  assert input_(spellcheck=True).render() == '<input spellcheck="true">'
+  assert input_(spellcheck=False).render() == '<input spellcheck="false">'
+
+  assert input_(translate=True).render() == '<input translate="true">'
+  assert input_(translate=False).render() == '<input translate="false">'

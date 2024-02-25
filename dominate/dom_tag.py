@@ -357,8 +357,11 @@ class dom_tag:
     for attribute, value in sorted(self.attributes.items()):
       if value in (False, None):
         continue
-      val = str(value) if isinstance(value, util.text) and not value.escape else util.escape(str(value), True)
-      sb.append(' %s="%s"' % (attribute, val))
+      if value is True:
+        sb.append(f' {attribute}')
+      else:
+        val = str(value) if isinstance(value, util.text) and not value.escape else util.escape(str(value), True)
+        sb.append(' %s="%s"' % (attribute, val))
 
     sb.append(' />' if self.is_single and xhtml else '>')
 
@@ -454,10 +457,15 @@ class dom_tag:
     '''
     attribute = cls.clean_attribute(attribute)
 
-    # Check for boolean attributes
-    # (i.e. selected=True becomes selected="selected")
-    if value is True:
-      value = attribute
+    # HTML has some boolean like attributes that can be true/false or on/off. Having to
+    # rember which attributes have which naming conventions is annoying, so being able to
+    # use True/False makes it so I don't have to remember.
+    if isinstance(value, bool):
+        if attribute in {'autocapitalize', 'autocomplete'}:
+            value = "on" if value else "off"
+
+        if attribute in {'contenteditable', 'draggable', 'spellcheck', 'translate'}:
+            value = "true" if value else "false"
 
     # Ignore `if value is False`: this is filtered out in render()
 
