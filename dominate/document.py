@@ -63,9 +63,9 @@ class document(tags.html):
     '''
     # adds the doctype if one was set
     if self.doctype:
-      sb.append(self.doctype)
-      sb.append('\n')
-    return super()._render(sb, *args, **kwargs)
+      sb.write(self.doctype)
+      sb.write('\n')
+    super()._render(sb, *args, **kwargs)
 
   def __repr__(self):
     return '<dominate.document "%s">' % self.title

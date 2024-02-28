@@ -1026,22 +1026,20 @@ class comment(html_tag):
     is_revealed   = comment.ATTRIBUTE_DOWNLEVEL in self.attributes and \
         self.attributes[comment.ATTRIBUTE_DOWNLEVEL] == 'revealed'
 
-    sb.append('<!')
+    sb.write('<!')
     if not is_revealed:
-      sb.append('--')
+      sb.write('--')
     if has_condition:
-      sb.append('[if %s]>' % self.attributes[comment.ATTRIBUTE_CONDITION])
+      sb.write('[if %s]>' % self.attributes[comment.ATTRIBUTE_CONDITION])
 
     pretty = self._render_children(sb, indent_level - 1, indent_str, pretty, xhtml)
 
     if any(isinstance(child, dom_tag) for child in self):
-      sb.append('\n')
-      sb.append(indent_str * (indent_level - 1))
+      sb.write('\n')
+      sb.write(indent_str * (indent_level - 1))
 
     if has_condition:
-      sb.append('<![endif]')
+      sb.write('<![endif]')
     if not is_revealed:
-      sb.append('--')
-    sb.append('>')
-
-    return sb
+      sb.write('--')
+    sb.write('>')

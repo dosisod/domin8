@@ -112,9 +112,8 @@ class container(dom_tag):
   def _render(self, sb, indent_level, indent_str, pretty, xhtml):
     inline = self._render_children(sb, indent_level, indent_str, pretty, xhtml)
     if pretty and not inline:
-      sb.append('\n')
-      sb.append(indent_str * (indent_level - 1))
-    return sb
+      sb.write('\n')
+      sb.write(indent_str * (indent_level - 1))
 
 
 class lazy(dom_tag):
@@ -140,7 +139,7 @@ class lazy(dom_tag):
 
   def _render(self, sb, *a, **kw):
     r = self.func(*self.args, **self.kwargs)
-    sb.append(str(r))
+    sb.write(str(r))
 
 
 class text(dom_tag):
@@ -159,8 +158,7 @@ class text(dom_tag):
       self.text = _text
 
   def _render(self, sb, *a, **kw):
-    sb.append(self.text)
-    return sb
+    sb.write(self.text)
 
 
 def raw(s):

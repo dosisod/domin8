@@ -20,6 +20,7 @@ Public License along with Dominate.  If not, see
 
 import copy
 import numbers
+from io import StringIO
 from collections import defaultdict, namedtuple
 from functools import wraps
 import threading
@@ -336,8 +337,9 @@ class dom_tag:
 
 
   def render(self, indent='  ', pretty=True, xhtml=False):
-    data = self._render([], 0, indent, pretty, xhtml)
-    return ''.join(data)
+    sb = StringIO()
+    self._render(sb, 0, indent, pretty, xhtml)
+    return sb.getvalue()
 
 
   def _render(self, sb, indent_level, indent_str, pretty, xhtml):
@@ -351,32 +353,32 @@ class dom_tag:
       name = name[:-1]
 
     # open tag
-    sb.append('<')
-    sb.append(name)
+    sb.write('<')
+    sb.write(name)
 
     for attribute, value in sorted(self.attributes.items()):
       if value in (False, None):
         continue
       if value is True:
-        sb.append(f' {attribute}')
+        sb.write(f' {attribute}')
       else:
         val = str(value) if isinstance(value, util.text) and not value.escape else util.escape(str(value), True)
-        sb.append(' %s="%s"' % (attribute, val))
+        sb.write(' %s="%s"' % (attribute, val))
 
-    sb.append(' />' if self.is_single and xhtml else '>')
+    sb.write(' />' if self.is_single and xhtml else '>')
 
     if self.is_single:
       return sb
 
     inline = self._render_children(sb, indent_level + 1, indent_str, pretty, xhtml)
     if pretty and not inline:
-      sb.append('\n')
-      sb.append(indent_str * indent_level)
+      sb.write('\n')
+      sb.write(indent_str * indent_level)
 
     # close tag
-    sb.append('</')
-    sb.append(name)
-    sb.append('>')
+    sb.write('</')
+    sb.write(name)
+    sb.write('>')
 
     return sb
 
@@ -386,11 +388,11 @@ class dom_tag:
       if isinstance(child, dom_tag):
         if pretty and not child.is_inline:
           inline = False
-          sb.append('\n')
-          sb.append(indent_str * indent_level)
+          sb.write('\n')
+          sb.write(indent_str * indent_level)
         child._render(sb, indent_level, indent_str, pretty, xhtml)
       else:
-        sb.append(str(child))
+        sb.write(str(child))
 
     return inline
 
