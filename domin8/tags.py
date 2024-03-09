@@ -17,3 +17,4 @@ Public License along with Dominate.  If not, see
 '''
 
 from dominate.tags import *
+from dominate.tags import _del, _input, _map, _object, _time
