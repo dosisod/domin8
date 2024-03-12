@@ -9,7 +9,11 @@ def test_dom():
     s2 = span('World', id='span2')
 
   s3 = span('foobar', id='span3')
+
+  # TODO: remove once dom_tag extends dom1core
+  assert isinstance(dom, html_tag)
   dom.appendChild(s3)
+
   assert container.getElementById('base') is dom
   assert container.getElementById('span1') is s1
   assert container.getElementById('span3') is s3

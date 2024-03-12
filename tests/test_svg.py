@@ -1,11 +1,10 @@
+import dominate
 import dominate.svg
 from dominate.tags import *
 from dominate.svg import *
 
-import pytest
 
-
-def base():
+def svg_base() -> svg:
   return svg(
     width=120, height=120, viewBox="0 0 120 120", version="1.1",
     xmlns="http://www.w3.org/2000/svg",
@@ -13,13 +12,13 @@ def base():
   )
 
 
-def get_expected(func):
-  return func.__doc__.replace('\n  ', '\n').strip()
+def get_expected(func: object) -> str:
+  return (func.__doc__ or "").replace('\n  ', '\n').strip()
 
 
 def output_test(func):
   def wrapper():
-    with base() as result:
+    with svg_base() as result:
       func()
     assert result.render() == get_expected(func)
   return wrapper

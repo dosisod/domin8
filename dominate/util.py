@@ -2,6 +2,10 @@
 Utility classes for creating dynamic html documents
 '''
 
+from __future__ import annotations
+from collections.abc import Callable
+from io import StringIO
+
 __license__ = '''
 This file is part of Dominate.
 
@@ -20,23 +24,23 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
+from os import PathLike
+from typing import Any, List, Union
 import re
 
 from .dom_tag import dom_tag
 
 
-def include(f):
+def include(f: Union[str, bytes, PathLike]) -> text:  # type: ignore[type-arg]
   '''
   includes the contents of a file on disk.
   takes a filename
   '''
-  fl = open(f, 'r')
-  data = fl.read()
-  fl.close()
-  return raw(data)
+  with open(f, 'r') as file:
+    return raw(file.read())
 
 
-def escape(data, quote=True):  # stolen from std lib cgi
+def escape(data: str, quote: bool=True) -> str:  # stolen from std lib cgi
   '''
   Escapes special characters into their html entities
   Replace special characters "&", "<" and ">" to HTML-safe sequences.
@@ -66,7 +70,7 @@ _unescape = {
 str_escape = escape
 
 
-def unescape(data):
+def unescape(data: str) -> str:
   '''
   unescapes html entities. the opposite of escape.
   '''
@@ -95,11 +99,11 @@ _reserved = ";/?:@&=+$, "
 _replace_map = dict((c, '%%%2X' % ord(c)) for c in _reserved)
 
 
-def url_escape(data):
+def url_escape(data: str) -> str:
   return ''.join(_replace_map.get(c, c) for c in data)
 
 
-def url_unescape(data):
+def url_unescape(data: str) -> str:
   return re.sub('%([0-9a-fA-F]{2})',
     lambda m: chr(int(m.group(1), 16)), data)
 
@@ -109,7 +113,7 @@ class container(dom_tag):
   Contains multiple elements, but does not add a level
   '''
   is_inline = True
-  def _render(self, sb, indent_level, indent_str, pretty, xhtml):
+  def _render(self, sb: StringIO, indent_level: int, indent_str: str, pretty: bool, xhtml: bool) -> None:
     inline = self._render_children(sb, indent_level, indent_str, pretty, xhtml)
     if pretty and not inline:
       sb.write('\n')
@@ -120,7 +124,7 @@ class lazy(dom_tag):
   '''
   delays function execution until rendered
   '''
-  def __new__(_cls, *args, **kwargs):
+  def __new__(_cls, *args: Any, **kwargs: Any) -> "lazy":
     '''
     Need to reset this special method or else
     dom_tag will think it's being used as a dectorator.
@@ -130,14 +134,14 @@ class lazy(dom_tag):
     '''
     return object.__new__(_cls)
 
-  def __init__(self, func, *args, **kwargs):
+  def __init__(self, func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
     super().__init__()
     self.func   = func
     self.args   = args
     self.kwargs = kwargs
 
 
-  def _render(self, sb, *a, **kw):
+  def _render(self, sb: StringIO, *a: Any, **kw: Any) -> None:
     r = self.func(*self.args, **self.kwargs)
     sb.write(str(r))
 
@@ -149,7 +153,7 @@ class text(dom_tag):
   is_pretty = False
   is_inline = True
 
-  def __init__(self, _text, escape=True):
+  def __init__(self, _text: str, escape: bool=True):
     super().__init__()
     self.escape = escape
     if escape:
@@ -157,11 +161,11 @@ class text(dom_tag):
     else:
       self.text = _text
 
-  def _render(self, sb, *a, **kw):
+  def _render(self, sb: StringIO, *a: Any, **kw: Any) -> None:
     sb.write(self.text)
 
 
-def raw(s):
+def raw(s: str) -> text:
   '''
   Inserts a raw string into the DOM. Unsafe. Alias for text(x, escape=False)
   '''

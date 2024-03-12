@@ -31,6 +31,7 @@ classifiers = [
     "Topic :: Text Processing :: Markup :: HTML",
 ]
 dynamic = ["version"]
+dependencies = ["typing_extensions"]
 
 [project.urls]
 Homepage = "https://github.com/dosisod/domin8"
@@ -41,3 +42,20 @@ packages = ["dominate", "domin8"]
 
 [tool.setuptools.dynamic]
 version = {attr = "dominate._version.__version__"}
+
+[tool.mypy]
+python_version = "3.8"
+allow_redefinition = true
+# TODO: enable these later
+# disallow_any_decorated = true
+# disallow_any_explicit = true
+# disallow_any_unimported = true
+namespace_packages = true
+pretty = true
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false

@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing_extensions import LiteralString, Self, override
+
 __license__ = '''
 This file is part of Dominate.
 
@@ -21,16 +24,17 @@ Public License along with Dominate.  If not, see
 import copy
 import numbers
 from io import StringIO
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 from functools import wraps
 import threading
 from asyncio import get_event_loop
+from typing import Any, DefaultDict, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple, Type, TypeVar, Union, cast, overload
 from uuid import uuid4
 from collections.abc import Callable
 from contextvars import ContextVar
 
 try:
-  import greenlet
+  import greenlet  # type: ignore
 except ImportError:
   greenlet = None
 
@@ -44,15 +48,17 @@ except ImportError:
 # We use this to store a unique ID for each async context. We then use thie ID to
 # form the key (in _get_thread_context) that is used to index the _with_context defaultdict.
 # The presense of this key ensures that each async context has its own stack and doesn't conflict.
-async_context_id = ContextVar('async_context_id', default = None)
+async_context_id: ContextVar[Optional[str]] = ContextVar('async_context_id', default=None)
 
-def _get_async_context_id():
+def _get_async_context_id() -> str:
   if async_context_id.get() is None:
     async_context_id.set(uuid4().hex)
-  return async_context_id.get()
+  return cast(str, async_context_id.get())
 
-def _get_thread_context():
-  context = [threading.current_thread()]
+ThreadContext = Tuple[Union[threading.Thread, Any], ...]
+
+def _get_thread_context() -> ThreadContext:
+  context: List[Union[threading.Thread, Any]] = [threading.current_thread()]
   # Tag extra content information with a name to make sure
   # a greenlet.getcurrent() == 1 doesn't get confused with a
   # a _get_thread_context() == 1.
@@ -68,6 +74,16 @@ def _get_thread_context():
     pass
   return tuple(context)
 
+class Frame(NamedTuple):
+  tag: "dom_tag"
+  items: List["dom_tag"]
+  used: Set["dom_tag"]
+
+TagLike = Union["dom_tag", str, Dict[str, Any], numbers.Number, Any]
+TagLike_T = TypeVar("TagLike_T", bound=TagLike)
+
+T = TypeVar("T", "dom_tag", str)
+
 class dom_tag:
   is_single = False  # Tag does not require matching end tag (ex. <hr/>)
   is_pretty = True   # Text inside the tag should be left as-is (ex. <pre>)
@@ -76,25 +92,25 @@ class dom_tag:
   is_inline = False
 
 
-  def __new__(_cls, *args, **kwargs):
+  def __new__(_cls, *args: Any, **kwargs: Any) -> "dom_tag":
     '''
     Check if bare tag is being used a a decorator
     (called with a single function arg).
     decorate the function and return
     '''
-    if len(args) == 1 and isinstance(args[0], Callable) \
+    if len(args) == 1 and callable(args[0]) \
         and not isinstance(args[0], dom_tag) and not kwargs:
       wrapped = args[0]
 
       @wraps(wrapped)
-      def f(*args, **kwargs):
+      def f(*args: Any, **kwargs: Any) -> Any:
         with _cls() as _tag:
           return wrapped(*args, **kwargs) or _tag
-      return f
+      return f  # type: ignore
     return object.__new__(_cls)
 
 
-  def __init__(self, *args, **kwargs):
+  def __init__(self, *args: Any, **kwargs: Any) -> None:
     '''
     Creates a new tag. Child tags should be passed as arguments and attributes
     should be passed as keyword arguments.
@@ -105,9 +121,9 @@ class dom_tag:
                    line.
     '''
 
-    self.attributes = {}
-    self.children   = []
-    self.parent     = None
+    self.attributes: Dict[str, Union[str, bool, Any]] = {}
+    self.children: List[Union[dom_tag, str]] = []
+    self.parent: Optional[dom_tag] = None
 
     # Does not insert newlines on all children if True (recursive attribute)
     self.is_inline = kwargs.pop('__inline', self.is_inline)
@@ -120,29 +136,27 @@ class dom_tag:
     for attr, value in kwargs.items():
       self.set_attribute(*type(self).clean_pair(attr, value))
 
-    self._ctx = None
+    self._ctx: Optional[Frame] = None
     self._add_to_ctx()
 
 
-  # context manager
-  frame = namedtuple('frame', ['tag', 'items', 'used'])
   # stack of frames
-  _with_contexts = defaultdict(list)
+  _with_contexts: DefaultDict[ThreadContext, List[Frame]] = defaultdict(list)
 
-  def _add_to_ctx(self):
+  def _add_to_ctx(self) -> None:
     stack = dom_tag._with_contexts.get(_get_thread_context())
     if stack:
       self._ctx = stack[-1]
       stack[-1].items.append(self)
 
 
-  def __enter__(self):
+  def __enter__(self) -> dom_tag:
     stack = dom_tag._with_contexts[_get_thread_context()]
-    stack.append(dom_tag.frame(self, [], set()))
+    stack.append(Frame(self, [], set()))
     return self
 
 
-  def __exit__(self, type, value, traceback):
+  def __exit__(self, type: Any, value: Any, traceback: Any) -> None:
     thread_id = _get_thread_context()
     stack = dom_tag._with_contexts[thread_id]
     frame = stack.pop()
@@ -153,7 +167,7 @@ class dom_tag:
       del dom_tag._with_contexts[thread_id]
 
 
-  def __call__(self, func):
+  def __call__(self, func: Callable[..., Any]) -> Callable[..., dom_tag]:
     '''
     tag instance is being used as a decorator.
     wrap func to make a copy of this tag
@@ -164,7 +178,7 @@ class dom_tag:
       self._ctx.used.add(self)
 
     @wraps(func)
-    def f(*args, **kwargs):
+    def f(*args: Any, **kwargs: Any) -> dom_tag:
       tag = copy.deepcopy(self)
       tag._add_to_ctx()
       with tag:
@@ -172,7 +186,7 @@ class dom_tag:
     return f
 
 
-  def set_attribute(self, key, value):
+  def set_attribute(self, key: Union[int, str], value: Any) -> None:
     '''
     Add or update the value of an attribute.
     '''
@@ -186,15 +200,20 @@ class dom_tag:
   __setitem__ = set_attribute
 
 
-  def delete_attribute(self, key):
+  def delete_attribute(self, key: Union[int, str]) -> None:
     if isinstance(key, int):
       del self.children[key:key+1]
     else:
       del self.attributes[key]
   __delitem__ = delete_attribute
 
+  @overload
+  def add(self, arg: TagLike_T, /) -> TagLike_T: ...  # type: ignore[overload-overlap]
 
-  def add(self, *args):
+  @overload
+  def add(self, *args: TagLike) -> Tuple[TagLike, ...]: ...
+
+  def add(self, *args: TagLike) -> Union[TagLike, Tuple[TagLike, ...]]:
     '''
     Add new child tags.
     '''
@@ -231,28 +250,29 @@ class dom_tag:
     return args
 
 
-  def add_raw_string(self, s):
+  def add_raw_string(self, s: LiteralString) -> None:
     self.children.append(s)
 
 
-  def remove(self, obj):
+  def remove(self, obj: Any) -> None:
     self.children.remove(obj)
 
 
-  def clear(self):
+  def clear(self) -> None:
     for i in self.children:
       if isinstance(i, dom_tag) and i.parent is self:
         i.parent = None
     self.children = []
 
 
-  def get(self, tag=None, **kwargs):
+  def get(self, tag: Optional[Type[T]]=None, **kwargs: Any) -> List[T]:
     '''
     Recursively searches children for tags of a certain
     type with matching attributes.
     '''
     # Stupid workaround since we can not use dom_tag in the method declaration
-    if tag is None: tag = dom_tag
+    if tag is None:
+      tag = cast(Type[T], dom_tag)
 
     attrs = [(dom_tag.clean_attribute(attr), value)
         for attr, value in kwargs.items()]
@@ -262,7 +282,7 @@ class dom_tag:
       if (isinstance(tag, str) and type(child).__name__ == tag) or \
         (not isinstance(tag, str) and isinstance(child, tag)):
 
-        if all(child.attributes.get(attribute) == value
+        if all(child.attributes.get(attribute) == value  # type: ignore
             for attribute, value in attrs):
           # If the child is of correct type and has all attributes and values
           # in kwargs add as a result
@@ -273,7 +293,7 @@ class dom_tag:
     return results
 
 
-  def __getitem__(self, key):
+  def __getitem__(self, key: Union[str, int]) -> Union[dom_tag, str, bool, Any]:
     '''
     Returns the stored value of the specified attribute or child
     (if it exists).
@@ -296,28 +316,28 @@ class dom_tag:
   __getattr__ = __getitem__
 
 
-  def __len__(self):
+  def __len__(self) -> int:
     '''
     Number of child elements.
     '''
     return len(self.children)
 
 
-  def __bool__(self):
+  def __bool__(self) -> bool:
     '''
     Hack for "if x" and __len__
     '''
     return True
 
 
-  def __iter__(self):
+  def __iter__(self) -> Iterator[dom_tag | str]:
     '''
     Iterates over child elements.
     '''
     return self.children.__iter__()
 
 
-  def __contains__(self, item):
+  def __contains__(self, item: Type[T]) -> bool:
     '''
     Checks recursively if item is in children tree.
     Accepts both a string and a class.
@@ -325,24 +345,24 @@ class dom_tag:
     return bool(self.get(item))
 
 
-  def __iadd__(self, obj):
+  def __iadd__(self, obj: TagLike) -> Self:
     '''
     Reflexive binary addition simply adds tag as a child.
     '''
     self.add(obj)
     return self
 
-  def __str__(self):
+  def __str__(self) -> str:
     return self.render()
 
 
-  def render(self, indent='  ', pretty=True, xhtml=False):
+  def render(self, indent: str='  ', pretty: bool=True, xhtml: bool=False):
     sb = StringIO()
     self._render(sb, 0, indent, pretty, xhtml)
     return sb.getvalue()
 
 
-  def _render(self, sb, indent_level, indent_str, pretty, xhtml):
+  def _render(self, sb: StringIO, indent_level: int, indent_str: str, pretty: bool, xhtml: bool) -> StringIO:
     pretty = pretty and self.is_pretty
 
     name = getattr(self, 'tagname', type(self).__name__)
@@ -382,7 +402,7 @@ class dom_tag:
 
     return sb
 
-  def _render_children(self, sb, indent_level, indent_str, pretty, xhtml):
+  def _render_children(self, sb: StringIO, indent_level: int, indent_str: str, pretty: bool, xhtml: bool) -> bool:
     inline = True
     for child in self.children:
       if isinstance(child, dom_tag):
@@ -397,7 +417,7 @@ class dom_tag:
     return inline
 
 
-  def __repr__(self):
+  def __repr__(self) -> str:
     name = '%s.%s' % (self.__module__, type(self).__name__)
 
     attributes_len = len(self.attributes)
@@ -412,7 +432,7 @@ class dom_tag:
 
 
   @staticmethod
-  def clean_attribute(attribute):
+  def clean_attribute(attribute: str) -> str:
     '''
     Normalize attribute names for shorthand and work arounds for limitations
     in Python's syntax
@@ -450,7 +470,7 @@ class dom_tag:
 
 
   @classmethod
-  def clean_pair(cls, attribute, value):
+  def clean_pair(cls, attribute: str, value: Union[str, bool, Any]) -> tuple[str, Union[str, bool, Any]]:
     '''
     This will call `clean_attribute` on the attribute and also allows for the
     creation of boolean attributes.
@@ -475,7 +495,7 @@ class dom_tag:
 
 
 _get_current_none = object()
-def get_current(default=_get_current_none):
+def get_current(default: Any=_get_current_none) -> Union[dom_tag, Any]:
   '''
   get the current tag being used as a with context or decorated function.
   if no context is active, raises ValueError, or returns the default, if provided
@@ -489,7 +509,7 @@ def get_current(default=_get_current_none):
   return default
 
 
-def attr(*args, **kwargs):
+def attr(*args: Dict[str, Any], **kwargs: Any) -> None:
   '''
   Set attributes on the current active tag context
   '''

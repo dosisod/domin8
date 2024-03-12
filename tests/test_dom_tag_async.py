@@ -1,4 +1,5 @@
-from asyncio import gather, run, Semaphore
+from asyncio import Future, gather, run, Semaphore
+from typing import Tuple
 from dominate.dom_tag import async_context_id
 from textwrap import dedent
 
@@ -8,7 +9,7 @@ from dominate import tags
 # lets use a pair of semaphores to explicitly control when our coroutines run.
 # The order of execution will be marked as comments below:
 def test_async_bleed():
-    async def tag_routine_1(sem_1, sem_2):
+    async def tag_routine_1(sem_1, sem_2) -> str:
         root = tags.div(id = 1) # [1]
         with root: # [2]
             sem_2.release() # [3]
@@ -16,7 +17,7 @@ def test_async_bleed():
             tags.div(id = 2) # [11]
         return str(root) # [12]
 
-    async def tag_routine_2(sem_1, sem_2):
+    async def tag_routine_2(sem_1, sem_2) -> str:
         await sem_2.acquire() # [5]
         root = tags.div(id = 3) # [6]
         with root: # [7]
@@ -24,7 +25,7 @@ def test_async_bleed():
         sem_1.release() # [9]
         return str(root) # [10]
 
-    async def merge():
+    async def merge() -> Tuple[str, str]:
         sem_1 = Semaphore(0)
         sem_2 = Semaphore(0)
         return await gather(
@@ -36,7 +37,7 @@ def test_async_bleed():
     # As it is already set, _get_async_context_id will not set it to a new, unique value
     # and thus we won't be able to differentiate between the two contexts. This essentially simulates
     # the behavior before our async fix was implemented (the bleed):
-    async_context_id.set(0)
+    async_context_id.set(0)  # type: ignore
     tag_1, tag_2 = run(merge())
 
     # This looks wrong - but its what we would expect if we don't

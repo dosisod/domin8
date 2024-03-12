@@ -1,5 +1,22 @@
-import dominate
-from dominate.tags import *
+from dominate.tags import (
+  body,
+  br,
+  comment,
+  div,
+  h1,
+  head,
+  html,
+  i,
+  input_,
+  li,
+  p,
+  pre,
+  script,
+  span,
+  style,
+  ul,
+)
+from dominate.dom_tag import attr, get_current
 import pytest
 from dominate.util import raw
 
@@ -55,7 +72,7 @@ def test_add():
     d[2]
 
   with pytest.raises(TypeError):
-    d[None]
+    d[None]  # type: ignore
 
   del d[0]
   assert len(d) == 1
@@ -302,6 +319,8 @@ def test_nested_decorator_2():
       p(x)
     bar('a')
     bar('b')
+
+  x = foo()
 
   assert foo().render() == '''<span>
   <div class="bar">

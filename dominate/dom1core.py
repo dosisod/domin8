@@ -1,3 +1,5 @@
+# type: ignore
+
 __license__ = '''
 This file is part of Dominate.
 

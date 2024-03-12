@@ -16,13 +16,21 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
+from typing import Any, List, Optional, Tuple, Union, cast, overload
+
+from dominate.dom_tag import TagLike, TagLike_T
 from . import tags
 from . import util
 
 
 class document(tags.html):
   tagname = 'html'
-  def __init__(self, title='Dominate', doctype='<!DOCTYPE html>', *a, **kw):
+
+  title_node: Optional[tags.title]
+  body: tags.body
+  head: tags.head
+
+  def __init__(self, title: Optional[str]='Dominate', doctype: Optional[str]='<!DOCTYPE html>', *a: Any, **kw: Any):
     '''
     Creates a new document instance. Accepts `title` and `doctype`
     '''
@@ -30,7 +38,9 @@ class document(tags.html):
     self.doctype    = doctype
     self.head       = super().add(tags.head())
     self.body       = super().add(tags.body())
-    if title is not None:
+    if title is None:
+      self.title_node = None
+    else:
       self.title_node = self.head.add(tags.title(title))
     with self.body:
       self.header   = util.container()
@@ -38,26 +48,36 @@ class document(tags.html):
       self.footer   = util.container()
     self._entry = self.main
 
-  def get_title(self):
-    return self.title_node.text
+  def get_title(self) -> str:
+    return self.title_node.text if self.title_node else ''
 
-  def set_title(self, title):
+  def set_title(self, title: Union[str, tags.title]) -> None:
     if isinstance(title, str):
-      self.title_node.text = title
+      if self.title_node:
+        self.title_node.text = title
+      else:
+        self.title_node = tags.title(title)
     else:
-      self.head.remove(self.title_node)
+      if self.title:
+        self.head.remove(self.title_node)
       self.head.add(title)
       self.title_node = title
 
   title = property(get_title, set_title)
 
-  def add(self, *args):
+  @overload
+  def add(self, arg: TagLike_T, /) -> TagLike_T: ...  # type: ignore[overload-overlap]
+
+  @overload
+  def add(self, *args: TagLike) -> Tuple[TagLike, ...]: ...
+
+  def add(self, *args: TagLike) -> Union[TagLike, Tuple[TagLike, ...]]:
     '''
     Adding tags to a document appends them to the <body>.
     '''
     return self._entry.add(*args)
 
-  def _render(self, sb, *args, **kwargs):
+  def _render(self, sb: List[str], *args: Any, **kwargs: Any) -> List[str]:
     '''
     Renders the DOCTYPE and tag tree.
     '''
@@ -67,5 +87,5 @@ class document(tags.html):
       sb.write('\n')
     super()._render(sb, *args, **kwargs)
 
-  def __repr__(self):
+  def __repr__(self) -> str:
     return '<dominate.document "%s">' % self.title

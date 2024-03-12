@@ -1,10 +1,11 @@
 import pytest
 try:
-    import mock
+    import mock  # type: ignore
 except ImportError:
     import unittest.mock as mock
 
 from dominate.tags import *
+from dominate.dom_tag import dom_tag
 
 
 def test___get_thread_context(monkeypatch):
@@ -50,7 +51,7 @@ def test_set_attribute_error():
             'Only integer and string types are valid for assigning '
             'child tags and attributes, respectively.'
         )):
-        container.set_attribute(1.0, 'foo')
+        container.set_attribute(1.0, 'foo')  # type: ignore
 
 def test___get_item___child_index_error():
     d = div()
@@ -63,7 +64,7 @@ def test___contains__():
     assert 'div' in container
 
 def test_nested_context():
-    def sub(*args):
+    def sub(*args: dom_tag) -> None:
         with div('B') as B:
             B.add(*args)
 

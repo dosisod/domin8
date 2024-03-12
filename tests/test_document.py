@@ -1,4 +1,4 @@
-from dominate import document
+from dominate import document  # type: ignore
 from dominate.tags import *
 
 def test_doc():
@@ -113,7 +113,3 @@ def test_attributes():
 def test_repr():
   d = document(title='foo')
   assert d.__repr__() == '<dominate.document "foo">'
-
-if __name__ == '__main__':
-  # test_doc()
-  test_decorator()

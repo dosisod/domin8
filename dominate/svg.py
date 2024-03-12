@@ -58,7 +58,7 @@ DASHED_ATTRIBUTES = set([
 # https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg
 class svg_tag(html_tag):
   @staticmethod
-  def clean_attribute(attribute):
+  def clean_attribute(attribute: str) -> str:
     attribute = html_tag.clean_attribute(attribute)
     words = attribute.split('_')
     if words[0] in DASHED_ATTRIBUTES:

@@ -18,8 +18,10 @@ You should have received a copy of the GNU Lesser General
 Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
+from io import StringIO
+from typing import List
 from .dom_tag  import dom_tag, attr, get_current
-from .dom1core import dom1core
+from .dom1core import dom1core  # type: ignore
 
 
 underscored_classes = set(['del', 'input', 'map', 'object'])
@@ -50,7 +52,7 @@ ERR_CONTEXT = 'context'
 ERR_CONTENT = 'content'
 
 
-class html_tag(dom_tag, dom1core):
+class html_tag(dom_tag, dom1core):  # type: ignore
   pass
 
 
@@ -76,12 +78,13 @@ class title(html_tag):
   document's title is often different from its first heading, since the first
   heading does not have to stand alone when taken out of context.
   '''
-  def _get_text(self):
+  @property
+  def text(self) -> str:
     return ''.join(self.get(str))
-  def _set_text(self, text):
+  @text.setter
+  def text(self, text: str) -> None:
     self.clear()
     self.add(text)
-  text = property(_get_text, _set_text)
 
 
 class base(html_tag):
@@ -1021,7 +1024,7 @@ class comment(html_tag):
   # Valid values are 'hidden', 'downlevel' or 'revealed'
   ATTRIBUTE_DOWNLEVEL = 'downlevel'
 
-  def _render(self, sb, indent_level=1, indent_str='  ', pretty=True, xhtml=False):
+  def _render(self, sb: StringIO, indent_level: int=1, indent_str: str='  ', pretty: bool=True, xhtml: bool=False) -> None:
     has_condition = comment.ATTRIBUTE_CONDITION in self.attributes
     is_revealed   = comment.ATTRIBUTE_DOWNLEVEL in self.attributes and \
         self.attributes[comment.ATTRIBUTE_DOWNLEVEL] == 'revealed'
@@ -1034,7 +1037,7 @@ class comment(html_tag):
 
     pretty = self._render_children(sb, indent_level - 1, indent_str, pretty, xhtml)
 
-    if any(isinstance(child, dom_tag) for child in self):
+    if any(isinstance(child, dom_tag) for child in iter(self)):
       sb.write('\n')
       sb.write(indent_str * (indent_level - 1))
 
