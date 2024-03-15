@@ -75,14 +75,12 @@ class animate(svg_tag):
   The  animate SVG element is used to animate an attribute or property of an element over time.
   It's normally inserted inside the element or referenced by the href attribute of the target element.
   '''
-  pass
 
 
 class animateMotion(svg_tag):
   '''
   The <animateMotion> element causes a referenced element to move along a motion path.
   '''
-  pass
 
 
 class animateTransform(svg_tag):
@@ -97,14 +95,12 @@ class circle(svg_tag):
   '''
   The <circle> SVG element is an SVG basic shape, used to draw circles based on a center point and a radius.
   '''
-  pass
 
 
 class clipPath(svg_tag):
   '''
   The <clipPath> SVG element defines a clipping path, to be used used by the clip-path property.
   '''
-  pass
 
 
 class defs(svg_tag):
@@ -113,21 +109,18 @@ class defs(svg_tag):
   <defs> element are not rendered directly. To display them you have to reference them
   (with a <use> element for example).
   '''
-  pass
 
 
 class desc(svg_tag):
   '''
   The <desc> element provides an accessible, long-text description of any SVG container element or graphics element.
   '''
-  pass
 
 
 class ellipse(svg_tag):
   '''
   An ellipse element for svg containers
   '''
-  pass
 
 # (Note, filters are at the bottom of this file)
 
@@ -135,21 +128,18 @@ class g(svg_tag):
   '''
   The <g> SVG element is a container used to group other SVG elements.
   '''
-  pass
 
 
 class image(svg_tag):
   '''
   The <image> SVG element includes images inside SVG documents. It can display raster image files or other SVG files.
   '''
-  pass
 
 
 class line(svg_tag):
   '''
   The <line> element is an SVG basic shape used to create a line connecting two points.
   '''
-  pass
 
 
 class linearGradient(svg_tag):
@@ -157,14 +147,12 @@ class linearGradient(svg_tag):
   The <linearGradient> element lets authors define linear gradients that can be applied to fill or
   stroke of graphical elements.
   '''
-  pass
 
 
 class marker(svg_tag):
   '''
   The <marker> element defines the graphic that is to be used for drawing arrowheads or polymarkers on a given <path>, <line>, <polyline> or <polygon> element.
   '''
-  pass
 
 
 class mask(svg_tag):
@@ -172,7 +160,6 @@ class mask(svg_tag):
   The <mask> element defines an alpha mask for compositing the current object into the background.
   A mask is used/referenced using the mask property.
   '''
-  pass
 
 
 class mpath(svg_tag):
@@ -180,7 +167,6 @@ class mpath(svg_tag):
   The <mpath> sub-element for the <animateMotion> element provides the ability to reference an
   external <path> element as the definition of a motion path.
   '''
-  pass
 
 
 class pattern(svg_tag):
@@ -188,21 +174,18 @@ class pattern(svg_tag):
   The <pattern> element defines a graphics object which can be redrawn at repeated x and y-coordinate
   intervals ("tiled") to cover an area.
   '''
-  pass
 
 
 class polygon(svg_tag):
   '''
   A polygon element for svg containers
   '''
-  pass
 
 
 class polyline(svg_tag):
   '''
   A polyline element for svg containers
   '''
-  pass
 
 
 class radialGradient(svg_tag):
@@ -210,21 +193,18 @@ class radialGradient(svg_tag):
   The <radialGradient> element lets authors define radial gradients that can be applied to fill
   or stroke of graphical elements.
   '''
-  pass
 
 
 class path(svg_tag):
   '''
   A path element for svg containers
   '''
-  pass
 
 
 class rect(svg_tag):
   '''
   A rectangle element for svg containers
   '''
-  pass
 
 
 class stop(svg_tag):
@@ -232,7 +212,6 @@ class stop(svg_tag):
   The SVG <stop> element defines a color and its position to use on a gradient.
   This element is always a child of a <linearGradient> or <radialGradient> element.
   '''
-  pass
 
 
 class switch(svg_tag):
@@ -242,7 +221,6 @@ class switch(svg_tag):
   Other direct children will be bypassed and therefore not rendered. If a child element is a container element,
   like <g>, then its subtree is also processed/rendered or bypassed/not rendered.
   '''
-  pass
 
 
 class symbol(svg_tag):
@@ -251,7 +229,6 @@ class symbol(svg_tag):
    semantics. Documents that are rich in structure may be rendered graphically, as speech, or as Braille,
    and thus promote accessibility.
   '''
-  pass
 
 
 class text(svg_tag):
@@ -259,7 +236,6 @@ class text(svg_tag):
   The SVG <text> element draws a graphics element consisting of text. It's possible to apply a gradient,
    pattern, clipping path, mask, or filter to <text>, like any other SVG graphics element.
   '''
-  pass
 
 
 class textPath(svg_tag):
@@ -267,7 +243,6 @@ class textPath(svg_tag):
   To render text along the shape of a <path>, enclose the text in a <textPath> element that has an href
   attribute with a reference to the <path> element.
   '''
-  pass
 
 
 class title(svg_tag):
@@ -275,7 +250,6 @@ class title(svg_tag):
   The <title> element provides an accessible, short-text description of any SVG container
   element or graphics element.
   '''
-  pass
 
 
 class tspan(svg_tag):
@@ -283,21 +257,18 @@ class tspan(svg_tag):
   The SVG <tspan> element define a subtext within a <text> element or another <tspan> element.
   It allows to adjust the style and/or position of that subtext as needed.
   '''
-  pass
 
 
 class use(svg_tag):
   '''
   The <use> element takes nodes from within the SVG document, and duplicates them somewhere else.
   '''
-  pass
 
 
 class view(svg_tag):
   '''
   A view is a defined way to view the image, like a zoom level or a detail view.
   '''
-  pass
 
 
 # FILTERS
