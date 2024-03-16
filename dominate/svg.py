@@ -26,33 +26,12 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
-# Tag attributes
-_ATTR_GLOBAL = set([
-  'accesskey', 'class', 'class', 'contenteditable', 'contextmenu', 'dir',
-  'draggable', 'id', 'item', 'hidden', 'lang', 'itemprop', 'spellcheck',
-  'style', 'subject', 'tabindex', 'title'
-])
-
-# https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Events#Attributes
-_ATTR_EVENTS = set([
-  'onbegin', 'onend', 'onrepeat',
-  'onabort', 'onerror', 'onresize', 'onscroll', 'onunload',
-  'oncopy', 'oncut', 'onpaste',
-  'oncancel', 'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose', 'oncuechange', 'ondblclick',
-  'ondrag', 'ondragend', 'ondragenter', 'ondragexit', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop',
-  'ondurationchange', 'onemptied', 'onended', 'onerror', 'onfocus', 'oninput', 'oninvalid', 'onkeydown', 'onkeypress',
-  'onkeyup', 'onload', 'onloadeddata', 'onloadedmetadata','onloadstart', 'onmousedown', 'onmouseenter',
-  'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onpause', 'onplay',
-  'onplaying', 'onprogress', 'onratechange', 'onreset', 'onresize', 'onscroll', 'onseeked', 'onseeking', 'onselect',
-  'onshow', 'onstalled', 'onsubmit', 'onsuspend', 'ontimeupdate', 'ontoggle', 'onvolumechange', 'onwaiting'
-])
-
-DASHED_ATTRIBUTES = set([
+DASHED_ATTRIBUTES = {
   'accent', 'alignment', 'arabic', 'baseline', 'cap', 'clip', 'color', 'dominant', 'enable', 'fill', 'flood', 
   'font', 'glyph', 'horiz', 'image', 'letter', 'lighting', 'marker', 'overline', 'paint', 'panose', 'pointer', 
   'rendering', 'shape', 'stop', 'strikethrough', 'stroke', 'text', 'underline', 'unicode', 'units', 'v', 'vector', 
   'vert', 'word', 'writing', 'x'
-])
+}
 
 
 # https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg

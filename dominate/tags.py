@@ -24,28 +24,8 @@ from .dom_tag  import dom_tag, attr, get_current
 from .dom1core import dom1core  # type: ignore
 
 
-underscored_classes = set(['del', 'input', 'map', 'object'])
-
-# Tag attributes
-_ATTR_GLOBAL = set([
-  'accesskey', 'class', 'class', 'contenteditable', 'contextmenu', 'dir',
-  'draggable', 'id', 'item', 'hidden', 'lang', 'itemprop', 'spellcheck',
-  'style', 'subject', 'tabindex', 'title'
-])
-_ATTR_EVENTS = set([
-  'onabort', 'onblur', 'oncanplay', 'oncanplaythrough', 'onchange', 'onclick',
-  'oncontextmenu', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter',
-  'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'ondurationchange',
-  'onemptied', 'onended', 'onerror', 'onfocus', 'onformchange', 'onforminput',
-  'oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onload',
-  'onloadeddata', 'onloadedmetadata', 'onloadstart', 'onmousedown',
-  'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel',
-  'onpause', 'onplay', 'onplaying', 'onprogress', 'onratechange',
-  'onreadystatechange', 'onscroll', 'onseeked', 'onseeking', 'onselect',
-  'onshow', 'onstalled', 'onsubmit', 'onsuspend', 'ontimeupdate',
-  'onvolumechange', 'onwaiting'
-])
-
+# TODO: is this unused?
+underscored_classes = {'del', 'input', 'map', 'object'}
 
 ERR_ATTRIBUTE = 'attributes'
 ERR_CONTEXT = 'context'
