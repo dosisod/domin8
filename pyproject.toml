@@ -43,6 +43,9 @@ packages = ["dominate", "domin8"]
 [tool.setuptools.dynamic]
 version = {attr = "dominate._version.__version__"}
 
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
 [tool.mypy]
 python_version = "3.8"
 allow_redefinition = true
