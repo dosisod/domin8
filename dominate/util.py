@@ -3,8 +3,6 @@ Utility classes for creating dynamic html documents
 '''
 
 from __future__ import annotations
-from collections.abc import Callable
-from io import StringIO
 
 __license__ = '''
 This file is part of Dominate.
@@ -24,11 +22,27 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
+from collections.abc import Callable
+from io import StringIO
 from os import PathLike
-from typing import Any, List, Union
+from typing import Any, Union
 import re
 
 from .dom_tag import dom_tag
+
+
+__all__ = [
+    "container",
+    "escape",
+    "include",
+    "lazy",
+    "raw",
+    "str_escape",
+    "text",
+    "unescape",
+    "url_escape",
+    "url_unescape",
+]
 
 
 def include(f: Union[str, bytes, PathLike]) -> text:  # type: ignore[type-arg]

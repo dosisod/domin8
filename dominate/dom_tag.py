@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing_extensions import LiteralString, Self, override
+from typing_extensions import LiteralString, Self
 
 __license__ = '''
 This file is part of Dominate.
@@ -32,6 +32,17 @@ from typing import Any, DefaultDict, Dict, Iterator, List, NamedTuple, Optional,
 from uuid import uuid4
 from collections.abc import Callable
 from contextvars import ContextVar
+
+
+__all__ = [
+    "TagLike",
+    "TagLike_T",
+    "attr",
+    "dom_tag",
+    "get_current",
+    "util",
+]
+
 
 try:
   import greenlet  # type: ignore

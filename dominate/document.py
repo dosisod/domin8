@@ -16,11 +16,14 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
-from typing import Any, List, Optional, Tuple, Union, cast, overload
+from typing import Any, List, Optional, Tuple, Union, overload
 
 from dominate.dom_tag import TagLike, TagLike_T
 from . import tags
 from . import util
+
+
+__all__ = ["document"]
 
 
 class document(tags.html):

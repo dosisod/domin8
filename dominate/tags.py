@@ -1,6 +1,7 @@
 '''
 HTML tag classes.
 '''
+
 __license__ = '''
 This file is part of Dominate.
 
@@ -18,18 +19,135 @@ You should have received a copy of the GNU Lesser General
 Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
+
 from io import StringIO
-from typing import List
-from .dom_tag  import dom_tag, attr, get_current
+from .dom_tag  import dom_tag
 from .dom1core import dom1core  # type: ignore
+
+
+__all__ = [
+    "_del",
+    "_input",
+    "_map",
+    "_object",
+    "_time",
+    "a",
+    "abbr",
+    "address",
+    "area",
+    "article",
+    "aside",
+    "audio",
+    "b",
+    "base",
+    "bdi",
+    "bdo",
+    "blockquote",
+    "body",
+    "br",
+    "button",
+    "canvas",
+    "caption",
+    "cite",
+    "code",
+    "col",
+    "colgroup",
+    "command",
+    "comment",
+    "datalist",
+    "dd",
+    "del_",
+    "details",
+    "dfn",
+    "div",
+    "dl",
+    "dt",
+    "em",
+    "embed",
+    "fieldset",
+    "figcaption",
+    "figure",
+    "font",
+    "footer",
+    "form",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "head",
+    "header",
+    "hgroup",
+    "hr",
+    "html",
+    "html_tag",
+    "i",
+    "iframe",
+    "img",
+    "input_",
+    "ins",
+    "kbd",
+    "keygen",
+    "label",
+    "legend",
+    "li",
+    "link",
+    "main",
+    "map_",
+    "mark",
+    "menu",
+    "meta",
+    "meter",
+    "nav",
+    "noscript",
+    "object_",
+    "ol",
+    "optgroup",
+    "option",
+    "output",
+    "p",
+    "param",
+    "pre",
+    "progress",
+    "q",
+    "rp",
+    "rt",
+    "ruby",
+    "s",
+    "samp",
+    "script",
+    "section",
+    "select",
+    "small",
+    "source",
+    "span",
+    "strong",
+    "style",
+    "sub",
+    "summary",
+    "sup",
+    "table",
+    "tbody",
+    "td",
+    "textarea",
+    "tfoot",
+    "th",
+    "thead",
+    "time_",
+    "title",
+    "tr",
+    "track",
+    "u",
+    "ul",
+    "var",
+    "video",
+    "wbr",
+]
 
 
 # TODO: is this unused?
 underscored_classes = {'del', 'input', 'map', 'object'}
-
-ERR_ATTRIBUTE = 'attributes'
-ERR_CONTEXT = 'context'
-ERR_CONTENT = 'content'
 
 
 class html_tag(dom_tag, dom1core):  # type: ignore

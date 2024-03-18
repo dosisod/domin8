@@ -3,9 +3,6 @@ This module consists of classes specific to HTML5-SVG Elements. In general this 
 - Elements that are not specific to SVG (eg. <a>)
 - Elements that are deprecated
 '''
-from dominate.tags import html_tag
-from dominate.dom_tag import dom_tag
-import numbers
 
 
 __license__ = '''
@@ -25,6 +22,65 @@ You should have received a copy of the GNU Lesser General
 Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
+
+from dominate.tags import html_tag
+
+
+__all__ = [
+    "animate",
+    "animateMotion",
+    "animateTransform",
+    "circle",
+    "clipPath",
+    "defs",
+    "desc",
+    "ellipse",
+    "feBlend",
+    "feColorMatrix",
+    "feComponentTransfer",
+    "feComposite",
+    "feConvolveMatrix",
+    "feDiffuseLighting",
+    "feDisplacementMap",
+    "feDistantLight",
+    "feFlood",
+    "feGaussianBlur",
+    "feImage",
+    "feMerge",
+    "feMorphology",
+    "feOffset",
+    "fePointLight",
+    "feSpecularLighting",
+    "feSpotLight",
+    "feTile",
+    "feTurbulence",
+    "filter",
+    "g",
+    "image",
+    "line",
+    "linearGradient",
+    "marker",
+    "mask",
+    "mpath",
+    "path",
+    "pattern",
+    "polygon",
+    "polyline",
+    "radialGradient",
+    "rect",
+    "stop",
+    "svg",
+    "svg_tag",
+    "switch",
+    "symbol",
+    "text",
+    "textPath",
+    "title",
+    "tspan",
+    "use",
+    "view",
+]
+
 
 DASHED_ATTRIBUTES = {
   'accent', 'alignment', 'arabic', 'baseline', 'cap', 'clip', 'color', 'dominant', 'enable', 'fill', 'flood', 
