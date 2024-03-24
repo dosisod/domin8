@@ -22,11 +22,13 @@ Public License along with Dominate.  If not, see
 <http://www.gnu.org/licenses/>.
 '''
 
-from collections.abc import Callable
-from io import StringIO
-from os import PathLike
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Union
 import re
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from io import StringIO
+    from os import PathLike
 
 from .dom_tag import dom_tag
 

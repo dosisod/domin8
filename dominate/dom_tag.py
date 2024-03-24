@@ -28,11 +28,13 @@ from collections import defaultdict
 from functools import wraps
 import threading
 from asyncio import get_event_loop
-from typing import Any, DefaultDict, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple, Type, TypeVar, Union, cast, overload
+from typing import TYPE_CHECKING, Any, DefaultDict, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple, Type, TypeVar, Union, cast, overload
 from uuid import uuid4
-from collections.abc import Callable
 from contextvars import ContextVar
 
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 __all__ = [
     "TagLike",
